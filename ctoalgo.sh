@@ -15,7 +15,7 @@ if [ $# == 0 ];then
     Help 
 fi
 
-clang-format $1  | sed -e "s/}//g" \
+clang-format $1 | tr -d '\r' | sed -e "s/}//g" \
     -e "s/{//g" \
     -e "s/#.*//" \
     -e "s/\/\/.*//g" \
@@ -33,4 +33,5 @@ clang-format $1  | sed -e "s/}//g" \
     -e "s/;//g" \
     -e "/^$/d" \
     -e "s/while (\(.*\))/WHILE \1/g" \
-    -e "s/return/RETURN/g" | sed -E "s/^void (.*)\(.*\)|^int (.*)\(.*\)/Start of function \1\2/g" | sed -r ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba'
+    -e "s/return /RETURN /" | sed -E "s/^void (.*)\(.*\)|^int (.*)\(.*\)/Start of function \1\2/g" | sed -r ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba'
+    
